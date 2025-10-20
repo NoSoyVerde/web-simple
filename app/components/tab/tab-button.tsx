@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 
 interface TabButtonProps {
@@ -5,6 +6,7 @@ interface TabButtonProps {
   onClick: () => void;
   isSelected: boolean;
   className?: string;
+  ariaLabel?: string;
 }
 
 export default function TabButton({
@@ -12,6 +14,7 @@ export default function TabButton({
   onClick,
   isSelected,
   className,
+  ariaLabel,
 }: TabButtonProps) {
 
   let cssProps =
@@ -24,7 +27,7 @@ export default function TabButton({
   }
 
   return (
-    <button onClick={onClick} className={cssProps}>
+    <button onClick={onClick} className={cssProps} aria-label={ariaLabel}>
       {children}
     </button>
   );
