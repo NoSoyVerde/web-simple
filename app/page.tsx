@@ -7,8 +7,15 @@ export default function Page() {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen px-6 py-12 text-white">
       <Header />
-      <Dropdown menuText="Hola" />
-       <Dropdown menuText="Adios" />
+
+      <div className="w-full bg-[#6b00b3] h-14 flex justify-center items-stretch">
+        <div className="w-full bg-[#6b00b3] h-14 flex justify-center items-stretch gap-110">
+          <Dropdown menuText="MenuLeft" />
+          <Dropdown menuText="MenuRight" />
+        </div>
+      </div>
+
+      <br />
 
       <ConceptsSection />
       <TabsContainer />

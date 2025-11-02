@@ -1,38 +1,70 @@
 "use client";
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 
-const list = [
-  { href: "/", label: "Home" },
-  { href: "/prueba1", label: "Prueba1" },
-  { href: "/prueba2", label: "Prueba2" },
-];
+type LinkItem = {
+  href: string;
+  label: string;
+};
 
-export default function Dropdown({ menuText }: { menuText: string }) {
+const menuData: Record<string, LinkItem[]> = {
+  MenuLeft: [
+    { href: "/", label: "Home" },
+    { href: "/properties", label: "Properties" },
+    { href: "/add-property", label: "Add Property" },
+  ],
+  MenuRight: [
+    { href: "/profile", label: "Profile" },
+    { href: "/settings", label: "Settings" },
+    { href: "/logout", label: "Logout" },
+  ],
+};
+
+interface DropdownProps {
+  menuText: "MenuLeft" | "MenuRight";
+  position?: "left" | "right";
+}
+
+export default function Dropdown({ menuText, position = "left" }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
+  
+  const list = menuData[menuText]; 
+  
+  const finalPosition = position === "right" || menuText === "MenuRight" ? "right" : "left";
+  
+const buttonClasses = 
+  "h-full px-12 bg-purple-300 text-black font-semibold flex items-center gap-2 focus:outline-none";
+
+ 
+  const menuClasses = 
+    `absolute top-full ${finalPosition === "left" ? "left-0" : "right-0"} w-40 bg-purple-900 rounded-b-md shadow-lg z-20`;
+  
+  if (!list) return null; 
 
   return (
-    <div className="mx-auto md:mx-28 relative flex flex-col items-center w-[340px] bg-purple-700">
+    <div className="relative h-full">
       <button
-        className="bg-purple-400 p-4 2-full flex items-center justify-between font-bold text-xl rounded-lg t"
+        className={buttonClasses}
         onClick={() => setIsOpen((prev) => !prev)}
-        onBlur={() => setIsOpen(false)}
       >
         {menuText}
+        <span className={`transition-transform ${isOpen ? "rotate-180" : "rotate-0"}`}>
+          ▼
+        </span>
       </button>
+
       {isOpen && (
-        <div className="absolute top-20 w-full bg-pink-950 p-4 rounded-lg z-10">
+        <div className={menuClasses}>
           {list.map((item) => (
-            <div
+            <Link
               key={item.label}
-              className="flex w-full justify-between hover:bg-blue-400 cursor-pointer rounded-r-lg border-l-transparent hover:border-l-white border-l-4"
+              href={item.href}
+
+              className="block px-4 py-4 hover:bg-purple-700 transition" 
+              onClick={() => setIsOpen(false)}
             >
-              <Link href={item.href} className='flex-1 text-xl text-white rounded-md px-3 py-2'
-              onClick={() => setIsOpen(false)}>
-                {item.label}
-              </Link>
-            </div>
+              {item.label}
+            </Link>
           ))}
         </div>
       )}
